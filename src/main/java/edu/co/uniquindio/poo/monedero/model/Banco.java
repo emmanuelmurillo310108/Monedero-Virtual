@@ -110,6 +110,15 @@ public class Banco {
         return "Monedero no encontrado para eliminar.";
     }
 
+    public List<Cliente> listarClientes() {
+        return new ArrayList<>(listaClientes); // copia segura
+    }
+
+    public List<Monedero> listarMonederos() {
+        return new ArrayList<>(listaMonederos); // copia segura
+    }
+
+
     public List<Monedero> getListaMonederos() {
         return listaMonederos;
     }

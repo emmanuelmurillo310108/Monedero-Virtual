@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15"
+      fx:controller="edu.co.uniquindio.poo.monedero.viewController.ClienteViewController"
+      xmlns:fx="http://javafx.com/fxml">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <children>
+
+        <Label text="Información del Cliente" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+        <GridPane hgap="10" vgap="10">
+            <children>
+                <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <Label fx:id="lblNombre" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Email:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <Label fx:id="lblEmail" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Teléfono:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <Label fx:id="lblTelefono" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Puntos:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <Label fx:id="lblPuntos" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                <Label text="Rango:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <Label fx:id="lblRango" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+            </children>
+        </GridPane>
+
+        <Label text="Monederos del Cliente:" style="-fx-font-size: 16px;"/>
+        <TableView fx:id="tablaMonederos" prefHeight="300"/>
+
+        <Button text="Ver Monedero" onAction="#abrirMonedero"/>
+        <Button text="Volver" onAction="#volver"/>
+
+    </children>
+
+</VBox>
+
+
+

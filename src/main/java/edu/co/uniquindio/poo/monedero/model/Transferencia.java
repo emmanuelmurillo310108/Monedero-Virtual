@@ -11,7 +11,7 @@ public class Transferencia extends Transaccion {
             );
             monedero.registrarTransaccion(this);
         } else {
-            System.out.println("Error en la transferencia.");
+            System.out.println("Error en la transferencia");
         }
     }
 

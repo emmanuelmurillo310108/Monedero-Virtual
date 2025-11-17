@@ -12,5 +12,5 @@ module edu.co.uniquindio.poo.monedero {
     requires com.almasb.fxgl.all;
 
     opens edu.co.uniquindio.poo.monedero to javafx.fxml;
-    exports edu.co.uniquindio.poo.monedero;
+    exports edu.co.uniquindio.poo.monedero.app;
 }

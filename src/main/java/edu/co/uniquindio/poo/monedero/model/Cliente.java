@@ -1,5 +1,7 @@
 package edu.co.uniquindio.poo.monedero.model;
 
+import edu.co.uniquindio.poo.monedero.controller.BancoController;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,7 @@ public class Cliente {
     private int puntosAcumulados;
     private Rango rango;
     private List<Beneficio> beneficiosCanjeados;
+    private Banco banco;
 
     public Cliente(int id, String nombre, String email, String telefono) {
         this.idCliente = id;
@@ -22,6 +25,7 @@ public class Cliente {
         this.beneficiosCanjeados = new ArrayList<>();
         this.puntosAcumulados = 0;
         this.rango = new Rango("Bronce", 0, 500);
+        this.banco = banco;
     }
 
     public int getIdCliente() {
@@ -88,6 +92,14 @@ public class Cliente {
         this.beneficiosCanjeados = beneficiosCanjeados;
     }
 
+    public Banco getBanco() {
+        return banco;
+    }
+
+    public void setBanco(Banco banco) {
+        this.banco = banco;
+    }
+
     public void realizarTransaccion(Transaccion t) {
         t.ejecutar();
         actualizarPuntos(t);
@@ -135,5 +147,6 @@ public class Cliente {
         else
             rango = new Rango("Platino", 5001, Integer.MAX_VALUE);
     }
+
 }
 
