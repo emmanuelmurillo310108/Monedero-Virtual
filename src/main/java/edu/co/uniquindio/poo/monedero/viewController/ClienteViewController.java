@@ -1,7 +1,8 @@
 package edu.co.uniquindio.poo.monedero.viewController;
 
 import edu.co.uniquindio.poo.monedero.app.SceneLoader;
-import edu.co.uniquindio.poo.monedero.controller.ClienteController;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import edu.co.uniquindio.poo.monedero.model.Cliente;
@@ -16,13 +17,20 @@ public class ClienteViewController {
     @FXML private Label lblRango;
 
     @FXML private TableView<Monedero> tablaMonederos;
+    @FXML private TableColumn<Monedero, String> colNombreMonedero;
+    @FXML private TableColumn<Monedero, Number> colSaldoMonedero;
 
     private Cliente cliente;
-    private ClienteController clienteController;
 
     @FXML
     public void initialize() {
-        clienteController = new ClienteController();
+        colNombreMonedero.setCellValueFactory(
+                m -> new SimpleStringProperty(m.getValue().getNombre())
+        );
+
+        colSaldoMonedero.setCellValueFactory(
+                m -> new SimpleDoubleProperty(m.getValue().getSaldo())
+        );
     }
 
     public void cargarCliente(Cliente cliente) {
@@ -40,16 +48,21 @@ public class ClienteViewController {
     @FXML
     private void abrirMonedero() {
         Monedero monedero = tablaMonederos.getSelectionModel().getSelectedItem();
-        if (monedero == null) return;
 
-        MonederoViewController controller =
-                SceneLoader.cargarVista("fxml/monedero.fxml");
+        if (monedero == null) {
+            new Alert(Alert.AlertType.WARNING, "Seleccione un monedero").show();
+            return;
+        }
+
+        MonederoViewController controller = (MonederoViewController) SceneLoader.cargarVista(
+                "edu/co/uniquindio/poo/monedero/monedero.fxml"
+        );
 
         controller.cargarMonedero(monedero, cliente);
     }
 
     @FXML
     private void volver() {
-        SceneLoader.cargarVista("fxml/banco.fxml");
+        SceneLoader.cargarVista("edu/co/uniquindio/poo/monedero/banco.fxml");
     }
 }

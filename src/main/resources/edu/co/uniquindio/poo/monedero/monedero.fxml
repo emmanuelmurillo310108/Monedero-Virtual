@@ -6,6 +6,7 @@
 
 <VBox spacing="15"
       fx:controller="edu.co.uniquindio.poo.monedero.viewController.MonederoViewController"
+      stylesheets="@styles.css"
       xmlns:fx="http://javafx.com/fxml">
 
     <padding>
@@ -14,7 +15,7 @@
 
     <children>
 
-        <Label text="Monedero" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+        <Label text="Monedero" styleClass="title"/>
 
         <HBox spacing="10">
             <children>
@@ -30,23 +31,20 @@
             </children>
         </HBox>
 
-        <TextField fx:id="txtMonto" promptText="Monto a operar"/>
-
-        <HBox spacing="10">
-            <children>
-                <Button text="Depositar" onAction="#depositar"/>
-                <Button text="Retirar" onAction="#retirar"/>
-            </children>
-        </HBox>
-
         <Button text="Realizar Transacción" onAction="#abrirTransaccion"/>
 
-        <Label text="Historial de Transacciones:"/>
-        <TableView fx:id="tablaHistorial" prefHeight="300"/>
+        <Label text="Historial de Transacciones:" styleClass="subtitle"/>
+
+        <TableView fx:id="tablaHistorial" prefHeight="300">
+            <columns>
+                <TableColumn fx:id="colTipoTrans" text="Tipo"/>
+                <TableColumn fx:id="colMontoTrans" text="Monto"/>
+                <TableColumn fx:id="colFechaTrans" text="Fecha"/>
+            </columns>
+        </TableView>
 
         <Button text="Volver" onAction="#volver"/>
 
     </children>
 
 </VBox>
-

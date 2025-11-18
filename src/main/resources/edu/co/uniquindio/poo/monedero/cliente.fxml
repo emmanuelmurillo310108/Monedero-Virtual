@@ -6,6 +6,7 @@
 
 <VBox spacing="15"
       fx:controller="edu.co.uniquindio.poo.monedero.viewController.ClienteViewController"
+      stylesheets="@styles.css"
       xmlns:fx="http://javafx.com/fxml">
 
     <padding>
@@ -14,29 +15,35 @@
 
     <children>
 
-        <Label text="Información del Cliente" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+        <Label text="Información del Cliente" styleClass="title"/>
 
         <GridPane hgap="10" vgap="10">
             <children>
-                <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                <Label fx:id="lblNombre" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <Label text="Nombre:"/>
+                <Label fx:id="lblNombre"/>
 
-                <Label text="Email:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                <Label fx:id="lblEmail" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                <Label text="Email:" GridPane.rowIndex="1"/>
+                <Label fx:id="lblEmail" GridPane.rowIndex="1"/>
 
-                <Label text="Teléfono:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                <Label fx:id="lblTelefono" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                <Label text="Teléfono:" GridPane.rowIndex="2"/>
+                <Label fx:id="lblTelefono" GridPane.rowIndex="2"/>
 
-                <Label text="Puntos:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                <Label fx:id="lblPuntos" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                <Label text="Puntos:" GridPane.rowIndex="3"/>
+                <Label fx:id="lblPuntos" GridPane.rowIndex="3"/>
 
-                <Label text="Rango:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-                <Label fx:id="lblRango" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                <Label text="Rango:" GridPane.rowIndex="4"/>
+                <Label fx:id="lblRango" GridPane.rowIndex="4"/>
             </children>
         </GridPane>
 
-        <Label text="Monederos del Cliente:" style="-fx-font-size: 16px;"/>
-        <TableView fx:id="tablaMonederos" prefHeight="300"/>
+        <Label text="Monederos del Cliente:" styleClass="subtitle"/>
+
+        <TableView fx:id="tablaMonederos" prefHeight="300">
+            <columns>
+                <TableColumn fx:id="colNombreMonedero" text="Nombre"/>
+                <TableColumn fx:id="colSaldoMonedero" text="Saldo"/>
+            </columns>
+        </TableView>
 
         <Button text="Ver Monedero" onAction="#abrirMonedero"/>
         <Button text="Volver" onAction="#volver"/>
@@ -44,6 +51,3 @@
     </children>
 
 </VBox>
-
-
-

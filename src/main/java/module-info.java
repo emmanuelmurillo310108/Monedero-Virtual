@@ -1,4 +1,5 @@
 module edu.co.uniquindio.poo.monedero {
+
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -11,6 +12,14 @@ module edu.co.uniquindio.poo.monedero {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
 
-    opens edu.co.uniquindio.poo.monedero to javafx.fxml;
+    opens edu.co.uniquindio.poo.monedero.viewController to javafx.fxml;
+
+    opens edu.co.uniquindio.poo.monedero.model to javafx.base;
+
+    opens edu.co.uniquindio.poo.monedero.app to javafx.fxml;
+
     exports edu.co.uniquindio.poo.monedero.app;
+    exports edu.co.uniquindio.poo.monedero.viewController;
+    exports edu.co.uniquindio.poo.monedero.model;
+    exports edu.co.uniquindio.poo.monedero.controller;
 }

@@ -1,15 +1,20 @@
 package edu.co.uniquindio.poo.monedero.model;
 
+import edu.co.uniquindio.poo.monedero.exceptions.MontoInvalidoException;
+import edu.co.uniquindio.poo.monedero.exceptions.SaldoInsuficienteException;
+
 public class Retiro extends Transaccion {
 
     @Override
     public void ejecutar() {
-        if (monedero.getSaldo() >= monto) {
-            monedero.setSaldo(monedero.getSaldo() - monto);
-            monedero.registrarTransaccion(this);
-        } else {
-            System.out.println("Saldo insuficiente para realizar el retiro");
+        if (monto <= 0) {
+            throw new MontoInvalidoException("El monto del retiro debe ser mayor que 0");
         }
+        if (monedero.getSaldo() < monto) {
+            throw new SaldoInsuficienteException("Saldo insuficiente para realizar el retiro");
+        }
+        monedero.setSaldo(monedero.getSaldo() - monto);
+        monedero.registrarTransaccion(this);
     }
 
     @Override

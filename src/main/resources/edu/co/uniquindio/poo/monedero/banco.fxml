@@ -6,14 +6,12 @@
 
 <BorderPane fx:controller="edu.co.uniquindio.poo.monedero.viewController.BancoViewController"
             xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@styles.css"
             prefWidth="900" prefHeight="600">
 
     <top>
         <HBox spacing="20" alignment="CENTER_LEFT">
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
-
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
             <children>
                 <Label text="Banco:"/>
                 <TextField fx:id="txtNombreBanco" editable="false" prefWidth="200"/>
@@ -23,42 +21,65 @@
 
     <left>
         <VBox spacing="10">
-            <padding>
-                <Insets top="15" right="15" bottom="15" left="15"/>
-            </padding>
-
+            <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
             <children>
-                <Label text="Gestión de Clientes" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+                <Label text="Gestión de Clientes" styleClass="title"/>
 
                 <TextField fx:id="txtNombreCliente" promptText="Nombre"/>
                 <TextField fx:id="txtEmailCliente" promptText="Email"/>
                 <TextField fx:id="txtTelefonoCliente" promptText="Teléfono"/>
 
-                <Button text="Registrar Cliente" onAction="#registrarCliente"/>
-                <Button text="Eliminar Cliente" onAction="#eliminarCliente"/>
+                <HBox spacing="10">
+                    <Button text="Registrar" onAction="#registrarCliente"/>
+                    <Button text="Actualizar" onAction="#actualizarCliente"/>
+                    <Button text="Eliminar" onAction="#eliminarCliente"/>
+                </HBox>
 
-                <Label text="Lista de Clientes:"/>
-                <TableView fx:id="tablaClientes" prefHeight="250"/>
+                <Button text="Abrir Cliente" onAction="#abrirCliente"/>
+
+                <Label text="Lista de Clientes:" styleClass="subtitle"/>
+
+                <TableView fx:id="tablaClientes" prefHeight="250">
+                    <columns>
+                        <TableColumn fx:id="colNombreCliente" text="Nombre"/>
+                        <TableColumn fx:id="colEmailCliente" text="Email"/>
+                        <TableColumn fx:id="colTelefonoCliente" text="Teléfono"/>
+                        <TableColumn fx:id="colPuntosCliente" text="Puntos"/>
+                    </columns>
+                </TableView>
+
             </children>
         </VBox>
     </left>
 
     <center>
         <VBox spacing="10">
-            <padding>
-                <Insets top="15" right="15" bottom="15" left="15"/>
-            </padding>
-
+            <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
             <children>
-                <Label text="Gestión de Monederos" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+                <Label text="Gestión de Monederos" styleClass="title"/>
 
                 <TextField fx:id="txtNombreMonedero" promptText="Nombre del monedero"/>
 
-                <Button text="Registrar Monedero" onAction="#registrarMonedero"/>
-                <Button text="Eliminar Monedero" onAction="#eliminarMonedero"/>
+                <HBox spacing="10">
+                    <Button text="Registrar" onAction="#registrarMonedero"/>
+                    <Button text="Actualizar" onAction="#actualizarMonedero"/>
+                    <Button text="Eliminar" onAction="#eliminarMonedero"/>
+                </HBox>
 
-                <Label text="Lista de Monederos:"/>
-                <TableView fx:id="tablaMonederos" prefHeight="250"/>
+                <Button text="Abrir Monedero" onAction="#abrirMonedero"/>
+
+                <Label text="Lista de Monederos:" styleClass="subtitle"/>
+
+                <TableView fx:id="tablaMonederos" prefHeight="250">
+                    <columns>
+                        <TableColumn fx:id="colNombreMonedero" text="Nombre"/>
+                        <TableColumn fx:id="colSaldoMonedero" text="Saldo"/>
+                        <TableColumn fx:id="colDuenoMonedero" text="Dueño"/>
+                    </columns>
+                </TableView>
+
             </children>
         </VBox>
     </center>

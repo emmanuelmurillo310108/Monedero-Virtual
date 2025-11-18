@@ -1,6 +1,9 @@
 package edu.co.uniquindio.poo.monedero.model;
 
 import edu.co.uniquindio.poo.monedero.controller.BancoController;
+import edu.co.uniquindio.poo.monedero.exceptions.CampoVacioException;
+import edu.co.uniquindio.poo.monedero.exceptions.EmailInvalidoException;
+import edu.co.uniquindio.poo.monedero.exceptions.TelefonoInvalidoException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +20,19 @@ public class Cliente {
     private Banco banco;
 
     public Cliente(int id, String nombre, String email, String telefono) {
+        validarNombre(nombre);
+        validarEmail(email);
+        validarTelefono(telefono);
+
         this.idCliente = id;
         this.nombre = nombre;
         this.email = email;
         this.telefono = telefono;
+
         this.monederos = new ArrayList<>();
         this.beneficiosCanjeados = new ArrayList<>();
         this.puntosAcumulados = 0;
         this.rango = new Rango("Bronce", 0, 500);
-        this.banco = banco;
     }
 
     public int getIdCliente() {
@@ -41,6 +48,7 @@ public class Cliente {
     }
 
     public void setNombre(String nombre) {
+        validarNombre(nombre);
         this.nombre = nombre;
     }
 
@@ -49,6 +57,7 @@ public class Cliente {
     }
 
     public void setEmail(String email) {
+        validarEmail(email);
         this.email = email;
     }
 
@@ -57,6 +66,7 @@ public class Cliente {
     }
 
     public void setTelefono(String telefono) {
+        validarTelefono(telefono);
         this.telefono = telefono;
     }
 
@@ -100,9 +110,34 @@ public class Cliente {
         this.banco = banco;
     }
 
-    public void realizarTransaccion(Transaccion t) {
+    private void validarNombre(String nombre) {
+        if (nombre == null || nombre.isBlank()) {
+            throw new CampoVacioException("El nombre no puede estar vacío");
+        }
+    }
+
+    private void validarEmail(String email) {
+        if (email == null || email.isBlank()) {
+            throw new CampoVacioException("El email no puede estar vacío");
+        }
+        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new EmailInvalidoException("El formato del email es inválido");
+        }
+    }
+
+    private void validarTelefono(String telefono) {
+        if (telefono == null || telefono.isBlank()) {
+            throw new CampoVacioException("El teléfono no puede estar vacío");
+        }
+        if (!telefono.matches("\\d{7,12}")) {
+            throw new TelefonoInvalidoException("El teléfono debe ser numérico y de 7 a 12 dígitos");
+        }
+    }
+
+    public void realizarTransaccion(Transaccion t){
         t.ejecutar();
-        actualizarPuntos(t);
+        puntosAcumulados += t.calcularPuntos();
+        actualizarRango();
     }
 
     public void actualizarPuntos(Transaccion t) {
@@ -146,6 +181,15 @@ public class Cliente {
             rango = new Rango("Oro", 1001, 5000);
         else
             rango = new Rango("Platino", 5001, Integer.MAX_VALUE);
+    }
+
+    public void agregarMonedero(Monedero monedero) {
+        monederos.add(monedero);
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
 
 }

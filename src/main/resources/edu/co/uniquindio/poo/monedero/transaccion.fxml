@@ -6,6 +6,7 @@
 
 <VBox spacing="15"
       fx:controller="edu.co.uniquindio.poo.monedero.viewController.TransaccionViewController"
+      stylesheets="@styles.css"
       xmlns:fx="http://javafx.com/fxml">
 
     <padding>
@@ -14,13 +15,13 @@
 
     <children>
 
-        <Label text="Transacciones" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+        <Label text="Transacciones" styleClass="title"/>
 
         <ComboBox fx:id="cbTipoTransaccion" promptText="Tipo de transacción"/>
 
         <TextField fx:id="txtMonto" promptText="Monto"/>
 
-        <Label text="Cliente destino (solo para transferencias)"/>
+        <Label text="Cliente destino (solo transferencias)" styleClass="subtitle"/>
         <ComboBox fx:id="cbDestino"/>
 
         <Button text="Ejecutar" onAction="#ejecutarTransaccion"/>
@@ -29,4 +30,3 @@
     </children>
 
 </VBox>
-

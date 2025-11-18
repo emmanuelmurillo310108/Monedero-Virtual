@@ -2,9 +2,11 @@ package edu.co.uniquindio.poo.monedero.viewController;
 
 import edu.co.uniquindio.poo.monedero.app.SceneLoader;
 import edu.co.uniquindio.poo.monedero.controller.TransaccionController;
+import edu.co.uniquindio.poo.monedero.controller.BancoController;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import edu.co.uniquindio.poo.monedero.model.*;
+import edu.co.uniquindio.poo.monedero.exceptions.*;
 
 public class TransaccionViewController {
 
@@ -15,11 +17,10 @@ public class TransaccionViewController {
     private Monedero monederoActual;
     private Cliente clienteOrigen;
 
-    private TransaccionController transaccionController;
+    private final TransaccionController transaccionController = new TransaccionController();
 
     @FXML
     public void initialize() {
-        transaccionController = new TransaccionController();
         cbTipoTransaccion.getItems().addAll("Deposito", "Retiro", "Transferencia");
     }
 
@@ -28,7 +29,8 @@ public class TransaccionViewController {
         this.clienteOrigen = origen;
 
         cbDestino.getItems().setAll(
-                origen.getBanco().listarClientes().stream()
+                BancoController.getInstance().listarClientes()
+                        .stream()
                         .filter(c -> c != origen)
                         .toList()
         );
@@ -36,24 +38,44 @@ public class TransaccionViewController {
 
     @FXML
     private void ejecutarTransaccion() {
-        double monto = Double.parseDouble(txtMonto.getText());
-        String tipo = cbTipoTransaccion.getValue();
+        try {
+            if (cbTipoTransaccion.getValue() == null) {
+                throw new CampoVacioException("Seleccione un tipo de transacción.");
+            }
 
-        Cliente destino = cbDestino.getValue();
+            if (txtMonto.getText().isBlank()) {
+                throw new CampoVacioException("Ingrese un monto.");
+            }
 
-        Transaccion t = transaccionController.crearTransaccion(
-                tipo, monto, clienteOrigen, destino, monederoActual
-        );
+            double monto = Double.parseDouble(txtMonto.getText());
+            String tipo = cbTipoTransaccion.getValue();
+            Cliente destino = cbDestino.getValue();
 
-        transaccionController.ejecutarTransaccion(t);
+            if (tipo.equals("Transferencia") && destino == null) {
+                throw new CampoVacioException("Seleccione un cliente destino.");
+            }
 
-        new Alert(Alert.AlertType.INFORMATION, "Transacción completada").show();
+            Transaccion t = transaccionController.crearTransaccion(
+                    tipo, monto, clienteOrigen, destino, monederoActual
+            );
+
+            transaccionController.ejecutarTransaccion(t);
+
+            new Alert(Alert.AlertType.INFORMATION, "Transacción realizada exitosamente").show();
+
+        } catch (NumberFormatException e) {
+            new Alert(Alert.AlertType.ERROR, "El monto debe ser numérico.").show();
+        } catch (RuntimeException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 
     @FXML
     private void volver() {
         MonederoViewController controller =
-                SceneLoader.cargarVista("fxml/monedero.fxml");
+                (MonederoViewController) SceneLoader.cargarVista(
+                        "edu/co/uniquindio/poo/monedero/monedero.fxml"
+                );
 
         controller.cargarMonedero(monederoActual, clienteOrigen);
     }

@@ -1,5 +1,9 @@
 package edu.co.uniquindio.poo.monedero.model;
 
+import edu.co.uniquindio.poo.monedero.exceptions.CampoVacioException;
+import edu.co.uniquindio.poo.monedero.exceptions.EntidadNoEncontradaException;
+import edu.co.uniquindio.poo.monedero.exceptions.MontoInvalidoException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,14 +12,18 @@ public class Monedero {
     private String nombre;
     private double saldo;
     private List<Transaccion> historial;
-    private Cliente cliente;
+    private Cliente dueño;
+    private Banco banco;
 
-    public Monedero(int id, String nombre, Cliente cliente) {
+    public Monedero(int id, String nombre, Cliente dueño) {
+        validarNombre(nombre);
+        validarDueño(dueño);
+
         this.idMonedero = id;
         this.nombre = nombre;
         this.saldo = 0.0;
         this.historial = new ArrayList<>();
-        this.cliente = cliente;
+        this.dueño = dueño;
     }
 
     public int getIdMonedero() {
@@ -31,6 +39,7 @@ public class Monedero {
     }
 
     public void setNombre(String nombre) {
+        validarNombre(nombre);
         this.nombre = nombre;
     }
 
@@ -39,6 +48,9 @@ public class Monedero {
     }
 
     public void setSaldo(double saldo) {
+        if (saldo < 0) {
+            throw new MontoInvalidoException("El saldo no puede ser negativo.");
+        }
         this.saldo = saldo;
     }
 
@@ -50,16 +62,37 @@ public class Monedero {
         this.historial = historial;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Cliente getDueño() {
+        return dueño;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setDueño(Cliente dueño) {
+        this.dueño = dueño;
+    }
+
+    public Banco getBanco() {
+        return banco;
+    }
+
+    private void validarNombre(String nombre) {
+        if (nombre == null || nombre.isBlank()) {
+            throw new CampoVacioException("El nombre del monedero no puede estar vacío.");
+        }
+    }
+
+    private void validarDueño(Cliente dueño) {
+        if (dueño == null) {
+            throw new EntidadNoEncontradaException("El monedero debe tener un dueño.");
+        }
     }
 
     public void registrarTransaccion(Transaccion t) {
         historial.add(t);
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
 }
 

@@ -18,14 +18,15 @@ public class MonederoController {
         retiro.ejecutar();
     }
 
-    public void transferir(Cliente origen, Cliente destino, double monto) {
+    public void transferir(Cliente origen, Cliente destino, double monto, Monedero monederoOrigen) {
         Transferencia transferencia = new Transferencia();
         transferencia.setMonto(monto);
         transferencia.setClienteOrigen(origen);
         transferencia.setClienteDestino(destino);
-        transferencia.setMonedero(origen.getMonederos().get(0)); // temporal
+        transferencia.setMonedero(monederoOrigen);
         transferencia.ejecutar();
     }
+
 }
 
 

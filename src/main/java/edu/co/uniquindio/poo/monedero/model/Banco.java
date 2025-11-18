@@ -55,13 +55,20 @@ public class Banco {
 
     public String actualizarCliente(String email, String nuevoNombre, String nuevoTelefono) {
         Cliente c = buscarCliente(email);
-        if (c != null) {
-            c.setNombre(nuevoNombre);
-            c.setTelefono(nuevoTelefono);
-            return "Cliente actualizado:\n" + c.toString();
+        if (c == null) {
+            return "Cliente no encontrado para actualizar";
         }
-        return "Cliente no encontrado para actualizar.";
+        if (nuevoNombre == null || nuevoNombre.isBlank()) {
+            return "El nombre no puede estar vacío";
+        }
+        if (nuevoTelefono == null || nuevoTelefono.isBlank()) {
+            return "El teléfono no puede estar vacío";
+        }
+        c.setNombre(nuevoNombre);
+        c.setTelefono(nuevoTelefono);
+        return "Cliente actualizado correctamente";
     }
+
 
     public String eliminarCliente(String email) {
         Cliente c = buscarCliente(email);
@@ -92,14 +99,22 @@ public class Banco {
         return null;
     }
 
-    public String actualizarMonedero(String nombre, double nuevoSaldo) {
-        Monedero m = buscarMonedero(nombre);
-        if (m != null) {
-            m.setSaldo(nuevoSaldo);
-            return "Monedero actualizado:\n" + m.toString();
+    public String actualizarMonedero(String nombreAnterior, String nuevoNombre) {
+        Monedero m = buscarMonedero(nombreAnterior);
+        if (m == null) {
+            return "Monedero no encontrado para actualizar";
         }
-        return "Monedero no encontrado para actualizar.";
+        if (nuevoNombre == null || nuevoNombre.isBlank()) {
+            return "El nuevo nombre no puede estar vacío";
+        }
+        if (!nombreAnterior.equalsIgnoreCase(nuevoNombre)
+                && buscarMonedero(nuevoNombre) != null) {
+            return "Ya existe un monedero llamado '" + nuevoNombre + "'.";
+        }
+        m.setNombre(nuevoNombre);
+        return "Monedero actualizado correctamente";
     }
+
 
     public String eliminarMonedero(String nombre) {
         Monedero m = buscarMonedero(nombre);

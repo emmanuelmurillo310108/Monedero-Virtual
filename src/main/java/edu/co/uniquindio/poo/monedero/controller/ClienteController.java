@@ -1,6 +1,7 @@
 package edu.co.uniquindio.poo.monedero.controller;
 
 import edu.co.uniquindio.poo.monedero.model.*;
+import java.util.List;
 
 public class ClienteController {
 
@@ -16,9 +17,8 @@ public class ClienteController {
         return cliente.consultarSaldo(monedero);
     }
 
-    public void verHistorial(Cliente cliente, Monedero monedero) {
-        for (Transaccion t : monedero.getHistorial()) {
-            System.out.println("Transaccion: " + t.getTipo() + " - Monto: " + t.getMonto());
-        }
+    public List<Transaccion> obtenerHistorial(Monedero monedero) {
+        return monedero.getHistorial();
     }
+
 }

@@ -16,6 +16,10 @@ public class TransaccionController {
                 transaccion = new Retiro();
                 break;
             case "transferencia":
+                if (destino == null) {
+                    System.out.println("Debe seleccionar un cliente destino");
+                    return null;
+                }
                 transaccion = new Transferencia();
                 break;
             default:
