@@ -1,5 +1,9 @@
 package edu.co.uniquindio.poo.monedero.controller;
 
+import edu.co.uniquindio.poo.monedero.exceptions.CampoVacioException;
+import edu.co.uniquindio.poo.monedero.exceptions.ClienteYaExisteException;
+import edu.co.uniquindio.poo.monedero.exceptions.MonederoYaExisteException;
+import edu.co.uniquindio.poo.monedero.exceptions.NombreDuplicadoException;
 import edu.co.uniquindio.poo.monedero.model.*;
 import java.util.List;
 
@@ -46,7 +50,20 @@ public class BancoController {
     }
 
     public String registrarCliente(Cliente cliente) {
-        return banco.registrarCliente(cliente);
+        try {
+            if (banco.buscarCliente(cliente.getEmail()) != null) {
+                throw new ClienteYaExisteException("Ya existe un cliente registrado con este correo");
+            }
+            for (Cliente c : banco.getListaClientes()) {
+                if (c.getNombre().equalsIgnoreCase(cliente.getNombre())) {
+                    throw new NombreDuplicadoException("Ya existe un cliente con el nombre: " + cliente.getNombre());
+                }
+            }
+            banco.getListaClientes().add(cliente);
+            return "Cliente registrado exitosamente";
+        } catch (RuntimeException ex) {
+            return "Error: " + ex.getMessage();
+        }
     }
 
     public Cliente buscarCliente(String email) {
@@ -55,17 +72,31 @@ public class BancoController {
 
     public String actualizarCliente(String email, String nuevoNombre, String nuevoTelefono) {
         if (nuevoNombre == null || nuevoNombre.isBlank())
-            return "El nombre no puede estar vacío";
+            throw new CampoVacioException("El nombre no puede estar vacío");
         if (nuevoTelefono == null || nuevoTelefono.isBlank())
-            return "El teléfono no puede estar vacío";
+            throw new CampoVacioException("El teléfono no puede estar vacío");
+        Cliente actual = banco.buscarCliente(email);
+        if (actual != null && !actual.getNombre().equalsIgnoreCase(nuevoNombre)) {
+            for (Cliente c : banco.getListaClientes()) {
+                if (c.getNombre().equalsIgnoreCase(nuevoNombre)) {
+                    throw new NombreDuplicadoException("Ya existe un cliente con el nombre: " + nuevoNombre);
+                }
+            }
+        }
         return banco.actualizarCliente(email, nuevoNombre, nuevoTelefono);
     }
 
+
     public String actualizarMonedero(String nombreAnterior, String nuevoNombre) {
         if (nuevoNombre == null || nuevoNombre.isBlank())
-            return "El nuevo nombre no puede estar vacío";
+            throw new CampoVacioException("El nuevo nombre no puede estar vacío");
+        Monedero existente = banco.buscarMonedero(nuevoNombre);
+        if (existente != null && !nombreAnterior.equalsIgnoreCase(nuevoNombre)) {
+            throw new MonederoYaExisteException("Ya existe un monedero con el nombre: " + nuevoNombre);
+        }
         return banco.actualizarMonedero(nombreAnterior, nuevoNombre);
     }
+
 
 
     public String eliminarCliente(String email) {
@@ -77,12 +108,16 @@ public class BancoController {
     }
 
     public String registrarMonederoParaCliente(Monedero monedero, Cliente cliente) {
+        if (banco.buscarMonedero(monedero.getNombre()) != null) {
+            throw new MonederoYaExisteException("Ya existe un monedero con el nombre: " + monedero.getNombre());
+        }
+        for (Monedero m : cliente.getMonederos()) {
+            if (m.getNombre().equalsIgnoreCase(monedero.getNombre())) {
+                throw new NombreDuplicadoException("Este cliente ya tiene un monedero llamado: " + monedero.getNombre());
+            }
+        }
         cliente.agregarMonedero(monedero);
         return banco.registrarMonedero(monedero);
-    }
-
-    public Monedero buscarMonedero(String nombre) {
-        return banco.buscarMonedero(nombre);
     }
 
     public String eliminarMonedero(String nombre) {

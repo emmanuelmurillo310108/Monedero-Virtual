@@ -4,11 +4,13 @@ public class Rango {
     private String nombre;
     private int puntosMin;
     private int puntosMax;
+    private double multiplicadorPuntos;
 
-    public Rango(String nombre, int puntosMin, int puntosMax) {
+    public Rango(String nombre, int puntosMin, int puntosMax, double multiplicadorPuntos) {
         this.nombre = nombre;
         this.puntosMin = puntosMin;
         this.puntosMax = puntosMax;
+        this.multiplicadorPuntos = multiplicadorPuntos;
     }
 
     public String getNombre() {
@@ -33,6 +35,14 @@ public class Rango {
 
     public void setPuntosMax(int puntosMax) {
         this.puntosMax = puntosMax;
+    }
+
+    public double getMultiplicadorPuntos() {
+        return multiplicadorPuntos;
+    }
+
+    public void setMultiplicadorPuntos(double multiplicadorPuntos) {
+        this.multiplicadorPuntos = multiplicadorPuntos;
     }
 }
 

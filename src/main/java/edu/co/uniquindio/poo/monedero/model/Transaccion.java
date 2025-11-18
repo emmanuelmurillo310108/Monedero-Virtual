@@ -1,6 +1,8 @@
 package edu.co.uniquindio.poo.monedero.model;
 
 import java.util.Date;
+
+import edu.co.uniquindio.poo.monedero.exceptions.MontoNegativoException;
 import edu.co.uniquindio.poo.monedero.model.interfaces.ITransaccion;
 
 public abstract class Transaccion implements ITransaccion {
@@ -14,6 +16,17 @@ public abstract class Transaccion implements ITransaccion {
     protected Cliente clienteOrigen;
     protected Cliente clienteDestino;
     protected Monedero monedero;
+    protected Monedero monederoDestino;
+
+    public Transaccion() {}
+
+    public Transaccion(Monedero monederoOrigen, Cliente origen, Cliente destino, double monto) {
+        this.monedero = monederoOrigen;
+        this.clienteOrigen = origen;
+        this.clienteDestino = destino;
+        this.monto = monto;
+        this.fechaCreacion = new Date();
+    }
 
     public void programarTransaccion(Date fecha, String frecuencia) {
         this.programada = true;
@@ -100,4 +113,13 @@ public abstract class Transaccion implements ITransaccion {
     public void setMonedero(Monedero monedero) {
         this.monedero = monedero;
     }
+
+    public void setMonederoDestino(Monedero monederoDestino) {
+        this.monederoDestino = monederoDestino;
+    }
+
+    public Monedero getMonederoDestino() {
+        return monederoDestino;
+    }
+
 }

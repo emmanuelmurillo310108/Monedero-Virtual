@@ -2,6 +2,7 @@ package edu.co.uniquindio.poo.monedero.viewController;
 
 import edu.co.uniquindio.poo.monedero.app.SceneLoader;
 import edu.co.uniquindio.poo.monedero.controller.BancoController;
+import edu.co.uniquindio.poo.monedero.exceptions.*;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -59,15 +60,29 @@ public class BancoViewController {
 
     @FXML
     private void registrarCliente() {
-        Cliente cliente = new Cliente(
-                banco.listarClientes().size() + 1,
-                txtNombreCliente.getText(),
-                txtEmailCliente.getText(),
-                txtTelefonoCliente.getText()
-        );
-
-        mostrarAlerta(banco.registrarCliente(cliente));
-        actualizarTablas();
+        try {
+            Cliente cliente = new Cliente(
+                    banco.listarClientes().size() + 1,
+                    txtNombreCliente.getText(),
+                    txtEmailCliente.getText(),
+                    txtTelefonoCliente.getText()
+            );
+            String respuesta = banco.registrarCliente(cliente);
+            mostrarAlerta(respuesta);
+            actualizarTablas();
+        } catch (CampoVacioException e) {
+            mostrarAlerta("Error: " + e.getMessage());
+        } catch (EmailInvalidoException e) {
+            mostrarAlerta("Error: " + e.getMessage());
+        } catch (TelefonoInvalidoException e) {
+            mostrarAlerta("Error: " + e.getMessage());
+        }catch (ClienteYaExisteException e) {
+            mostrarAlerta("Error: " + e.getMessage());
+        } catch (NombreDuplicadoException e) {
+            mostrarAlerta("Error: " + e.getMessage());
+        } catch (Exception e) {
+            mostrarAlerta("Error inesperado: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -103,18 +118,30 @@ public class BancoViewController {
     private void registrarMonedero() {
         Cliente cliente = tablaClientes.getSelectionModel().getSelectedItem();
         if (cliente == null) {
-            mostrarAlerta("Seleccione un cliente.");
+            mostrarAlerta("Seleccione un cliente");
             return;
         }
 
-        Monedero monedero = new Monedero(
-                banco.listarMonederos().size() + 1,
-                txtNombreMonedero.getText(),
-                cliente
-        );
+        try {
+            Monedero monedero = new Monedero(
+                    banco.listarMonederos().size() + 1,
+                    txtNombreMonedero.getText(),
+                    cliente
+            );
 
-        mostrarAlerta(banco.registrarMonederoParaCliente(monedero, cliente));
-        actualizarTablas();
+            String respuesta = banco.registrarMonederoParaCliente(monedero, cliente);
+            mostrarAlerta(respuesta);
+            actualizarTablas();
+
+        } catch (CampoVacioException | EntidadNoEncontradaException e) {
+            mostrarAlerta("Error: " + e.getMessage());
+        } catch (MonederoYaExisteException e) {
+            mostrarAlerta("Error: " + e.getMessage());
+        } catch (NombreDuplicadoException e) {
+            mostrarAlerta("Error: " + e.getMessage());
+        } catch (Exception e) {
+            mostrarAlerta("Error inesperado: " + e.getMessage());
+        }
     }
 
     @FXML

@@ -1,5 +1,6 @@
 package edu.co.uniquindio.poo.monedero.controller;
 
+import edu.co.uniquindio.poo.monedero.exceptions.MontoNegativoException;
 import edu.co.uniquindio.poo.monedero.model.*;
 import java.util.Date;
 
@@ -42,7 +43,12 @@ public class TransaccionController {
     }
 
     public void ejecutarTransaccion(Transaccion transaccion) {
-        transaccion.ejecutar();
+        try {
+            transaccion.ejecutar();
+            transaccion.getClienteOrigen().actualizarPuntos(transaccion);
+        } catch (MontoNegativoException e) {
+            System.out.println("Error en transacción: " + e.getMessage());
+        }
     }
 
     public int calcularPuntos(Transaccion transaccion) {

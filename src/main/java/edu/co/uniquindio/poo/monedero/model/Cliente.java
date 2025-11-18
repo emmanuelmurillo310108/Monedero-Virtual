@@ -32,7 +32,7 @@ public class Cliente {
         this.monederos = new ArrayList<>();
         this.beneficiosCanjeados = new ArrayList<>();
         this.puntosAcumulados = 0;
-        this.rango = new Rango("Bronce", 0, 500);
+        this.rango = new Rango("Bronce", 0, 500, 1);
     }
 
     public int getIdCliente() {
@@ -141,7 +141,11 @@ public class Cliente {
     }
 
     public void actualizarPuntos(Transaccion t) {
-        this.puntosAcumulados += t.calcularPuntos();
+        int puntosBase = t.calcularPuntos();
+        double multiplicador = rango.getMultiplicadorPuntos();
+        int puntosFinal = (int) Math.round(puntosBase * multiplicador);
+
+        this.puntosAcumulados += puntosFinal;
         actualizarRango();
     }
 
@@ -173,14 +177,18 @@ public class Cliente {
     }
 
     private void actualizarRango() {
-        if (puntosAcumulados <= 500)
-            rango = new Rango("Bronce", 0, 500);
-        else if (puntosAcumulados <= 1000)
-            rango = new Rango("Plata", 501, 1000);
-        else if (puntosAcumulados <= 5000)
-            rango = new Rango("Oro", 1001, 5000);
-        else
-            rango = new Rango("Platino", 5001, Integer.MAX_VALUE);
+        if (puntosAcumulados <= 500) {
+            rango = new Rango("Bronce", 0, 500, 1.0);
+        }
+        else if (puntosAcumulados <= 1000) {
+            rango = new Rango("Plata", 501, 1000, 1.1);
+        }
+        else if (puntosAcumulados <= 5000) {
+            rango = new Rango("Oro", 1001, 5000, 1.3);
+        }
+        else {
+            rango = new Rango("Platino", 5001, Integer.MAX_VALUE, 1.5);
+        }
     }
 
     public void agregarMonedero(Monedero monedero) {
